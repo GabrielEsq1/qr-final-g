@@ -318,6 +318,32 @@ function searchOP() {
         }
     }, 1000);
 }
+// En tu app.js o dentro del script del HTML
+async function loadUserData(op) {
+    try {
+        const response = await fetch(`/buscar-op?op=${op}`);
+        const user = await response.json();
+        
+        if (user && user.error) {
+            showError(op);
+        } else if (user) {
+            currentOp.textContent = user.op;
+            userName.textContent = user.nombre_usuario;
+            quantity.textContent = user.cantidad_fabricada;
+            fabric.textContent = user.tela;
+            size.textContent = user.talla;
+            link.textContent = user.link;
+            link.href = `http://${user.link}`;
+            empresa.textContent = user.empresa || "SERTECPET S.A. (Ecuador)";
+            hideError();
+        } else {
+            showError(op);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        showError(op);
+    }
+}
 
 // Función para copiar link MODIFICADA
 function copyLink(link) {
@@ -325,6 +351,8 @@ function copyLink(link) {
         alert('Enlace copiado al portapapeles: ' + link);
     });
 }
+// Agregar esta línea en la función loadUserData después de las otras asignaciones
+document.getElementById('empresa').textContent = "SERTECPET S.A. (Ecuador)";
 
 // Función para copiar link MODIFICADA
 function copyLink(link) {

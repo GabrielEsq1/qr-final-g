@@ -6,6 +6,7 @@
     <title>CCB Verificación de Promotores</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Todos tus estilos CSS se mantienen igual */
         :root {
             --primary: #FF6B6B;
             --primary-dark: #FF5252;
@@ -40,7 +41,6 @@
             margin: 0 auto;
         }
 
-        /* Header */
         .header {
             background: var(--card);
             border-radius: var(--radius);
@@ -73,7 +73,6 @@
             font-size: 1.8rem;
         }
 
-        /* Search Section */
         .search-section {
             background: var(--card);
             border-radius: var(--radius);
@@ -116,7 +115,6 @@
             transform: translateY(-2px);
         }
 
-        /* Current OP Section */
         .current-op {
             background: var(--card);
             border-radius: var(--radius);
@@ -152,7 +150,6 @@
             gap: 15px;
         }
 
-        /* Buttons */
         .btn {
             padding: 14px 28px;
             border: none;
@@ -189,7 +186,6 @@
             transform: translateY(-2px);
         }
 
-        /* User Info Grid */
         .user-info {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -240,7 +236,6 @@
             text-decoration: underline;
         }
 
-        /* Table Section */
         .table-section {
             background: var(--card);
             border-radius: var(--radius);
@@ -306,7 +301,6 @@
             font-weight: 500;
         }
 
-        /* Footer */
         .footer {
             background: var(--card);
             border-radius: var(--radius);
@@ -319,7 +313,6 @@
             font-weight: 600;
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .search-box {
                 flex-direction: column;
@@ -346,7 +339,6 @@
             }
         }
 
-        /* Animation */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -360,6 +352,21 @@
 
         .fade-in {
             animation: fadeInUp 0.6s ease-out;
+        }
+
+        .error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 15px 20px;
+            border-radius: var(--radius);
+            border-left: 5px solid #f44336;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+            animation: fadeInUp 0.4s ease-out;
         }
     </style>
 </head>
@@ -379,6 +386,12 @@
                 <i class="fas fa-search"></i>
                 Buscar por OP
             </h2>
+            
+            <!-- Mensaje de error -->
+            <div class="error-message" id="error-message">
+                <strong><i class="fas fa-exclamation-triangle"></i> No se encontró la orden de producción: <span id="error-op"></span></strong>
+            </div>
+            
             <div class="search-box">
                 <input type="text" class="search-input" placeholder="Ingrese el número de orden de producción" id="op-search">
                 <button class="btn btn-success" id="search-btn">
@@ -435,6 +448,13 @@
                     <div class="info-value" id="size">16</div>
                 </div>
                 <div class="info-card">
+    <div class="info-label">
+        <i class="fas fa-building"></i>
+        Empresa
+    </div>
+    <div class="info-value" id="empresa">SERTECPET S.A. (Ecuador)</div>
+</div>
+                <div class="info-card">
                     <div class="info-label">
                         <i class="fas fa-link"></i>
                         Enlace
@@ -444,10 +464,12 @@
                     </div>
                 </div>
             </div>
+        </section>
 
-            
+    
+
     <script>
-        // Datos de ejemplo
+        // DATOS COMPLETOS del Excel - Agregando EX-1125 y otros que faltaban
         const userData = [
             { op: "EX-0777", name: "RUTH REQUELME", quantity: 3, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "8", link: "www.madoco.co/EX-0777" },
             { op: "EX-0778", name: "LESSLY GUAMAN", quantity: 3, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "8", link: "www.madoco.co/EX-0778" },
@@ -464,10 +486,32 @@
             { op: "EX-0789", name: "MARIA F. CHAVEZ", quantity: 3, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "16", link: "www.madoco.co/EX-0789" },
             { op: "EX-0790", name: "MARIA G. MEDRANDA", quantity: 3, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "16", link: "www.madoco.co/EX-0790" },
             { op: "EX-0791", name: "EDISON JIMENEZ", quantity: 3, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "30", link: "www.madoco.co/EX-0791" },
-            { op: "EX-0792", name: "GEISON ORTIZ", quantity: 3, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "32", link: "www.madoco.co/EX-0792" }
+            { op: "EX-0792", name: "GEISON ORTIZ", quantity: 3, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "32", link: "www.madoco.co/EX-0792" },
+            
+            // Agregando los datos que faltaban del Excel
+            { op: "EX-1122", name: "SERGIO CRUZ", quantity: 3, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "44 SM", link: "www.madoco.co/EX-1122" },
+            { op: "EX-1123", name: "JACKSON LABORDE", quantity: 3, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "44", link: "www.madoco.co/EX-1123" },
+            { op: "EX-1124", name: "OVEROL ENTERIZO NOMEX GRIS", quantity: 6, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "8", link: "www.madoco.co/EX-1124" },
+            { op: "EX-1125", name: "OVEROL ENTERIZO NOMEX GRIS", quantity: 20, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "10", link: "www.madoco.co/EX-1125" },
+            { op: "EX-1126", name: "OVEROL ENTERIZO NOMEX GRIS", quantity: 38, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "12", link: "www.madoco.co/EX-1126" },
+            { op: "EX-1127", name: "OVEROL ENTERIZO NOMEX GRIS", quantity: 29, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "14", link: "www.madoco.co/EX-1127" },
+            { op: "EX-1128", name: "OVEROL ENTERIZO NOMEX GRIS", quantity: 9, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "16", link: "www.madoco.co/EX-1128" },
+            { op: "EX-1129", name: "OVEROL ENTERIZO NOMEX GRIS", quantity: 6, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "18", link: "www.madoco.co/EX-1129" },
+            { op: "EX-1130", name: "OVEROL ENTERIZO NOMEX GRIS", quantity: 32, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "30", link: "www.madoco.co/EX-1130" },
+            { op: "EX-1131", name: "OVEROL ENTERIZO NOMEX GRIS", quantity: 51, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "32", link: "www.madoco.co/EX-1131" },
+            { op: "EX-1132", name: "OVEROL ENTERIZO NOMEX GRIS", quantity: 88, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "33", link: "www.madoco.co/EX-1132" },
+            { op: "EX-1133", name: "OVEROL ENTERIZO NOMEX GRIS", quantity: 115, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "34", link: "www.madoco.co/EX-1133" },
+            { op: "EX-1134", name: "OVEROL ENTERIZO NOMEX GRIS", quantity: 168, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "35", link: "www.madoco.co/EX-1134" },
+            { op: "EX-1135", name: "OVEROL ENTERIZO NOMEX GRIS", quantity: 224, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "36", link: "www.madoco.co/EX-1135" },
+            { op: "EX-1136", name: "OVEROL ENTERIZO NOMEX GRIS", quantity: 171, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "37", link: "www.madoco.co/EX-1136" },
+            { op: "EX-1137", name: "OVEROL ENTERIZO NOMEX GRIS", quantity: 166, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "38", link: "www.madoco.co/EX-1137" },
+            { op: "EX-1138", name: "OVEROL ENTERIZO NOMEX GRIS", quantity: 166, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "39", link: "www.madoco.co/EX-1138" },
+            { op: "EX-1139", name: "OVEROL ENTERIZO NOMEX GRIS", quantity: 64, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "40", link: "www.madoco.co/EX-1139" },
+            { op: "EX-1140", name: "OVEROL ENTERIZO NOMEX GRIS", quantity: 78, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "41", link: "www.madoco.co/EX-1140" },
+            { op: "EX-1141", name: "OVEROL ENTERIZO NOMEX GRIS", quantity: 74, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "42", link: "www.madoco.co/EX-1141" },
+            { op: "EX-1142", name: "OVEROL ENTERIZO NOMEX GRIS", quantity: 21, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "43", link: "www.madoco.co/EX-1142" },
+            { op: "EX-1143", name: "OVEROL ENTERIZO NOMEX GRIS", quantity: 14, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "44", link: "www.madoco.co/EX-1143" }
         ];
-
-        
 
         // Elementos DOM
         const opSearch = document.getElementById('op-search');
@@ -480,12 +524,15 @@
         const link = document.getElementById('link');
         const tableBody = document.getElementById('table-body');
         const clearBtn = document.getElementById('clear-btn');
+        const errorMessage = document.getElementById('error-message');
+        const errorOp = document.getElementById('error-op');
 
         // Cargar datos iniciales
         function loadInitialData() {
             const initialOp = "EX-0790";
             loadUserData(initialOp);
             loadTableData();
+            hideError();
         }
 
         // Cargar datos del usuario
@@ -499,18 +546,32 @@
                 size.textContent = user.size;
                 link.textContent = user.link;
                 link.href = `http://${user.link}`;
+                hideError();
+            } else {
+                showError(op);
             }
+        }
+
+        // Mostrar error
+        function showError(op) {
+            errorOp.textContent = op;
+            errorMessage.classList.add('show');
+        }
+
+        // Ocultar error
+        function hideError() {
+            errorMessage.classList.remove('show');
         }
 
         // Cargar datos de la tabla
         function loadTableData() {
             tableBody.innerHTML = '';
-            elsData.forEach(item => {
+            userData.forEach(item => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${item.els}</td>
+                    <td>${item.op}</td>
+                    <td>${item.name}</td>
                     <td>${item.quantity}</td>
-                    <td>${item.fabric}</td>
                     <td>${item.size}</td>
                 `;
                 tableBody.appendChild(row);
@@ -521,20 +582,14 @@
         searchBtn.addEventListener('click', () => {
             const searchOp = opSearch.value.trim().toUpperCase();
             if (searchOp) {
-                const user = userData.find(item => item.op === searchOp);
-                if (user) {
-                    loadUserData(searchOp);
-                    opSearch.value = '';
-                    
-                    // Agregar animación
-                    document.querySelector('.current-op').classList.remove('fade-in');
-                    void document.querySelector('.current-op').offsetWidth;
-                    document.querySelector('.current-op').classList.add('fade-in');
-                } else {
-                    alert('No se encontró la orden de producción: ' + searchOp);
-                }
+                loadUserData(searchOp);
+                
+                // Agregar animación
+                document.querySelector('.current-op').classList.remove('fade-in');
+                void document.querySelector('.current-op').offsetWidth;
+                document.querySelector('.current-op').classList.add('fade-in');
             } else {
-                alert('Por favor, ingrese un número de OP');
+                showError('(campo vacío)');
             }
         });
 
