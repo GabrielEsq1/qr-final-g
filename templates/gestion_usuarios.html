@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Gestión de Usuarios | CCB{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2 class="h4 mb-0">Gestión de Usuarios</h2>
+  <a href="{{ url_for('crear_usuario') }}" class="btn btn-success">+ Crear nuevo usuario</a>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-hover mb-0 align-middle">
+        <thead class="table-light">
+          <tr>
+            <th style="width: 40%;">Usuario</th>
+            <th style="width: 60%;">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for usuario in usuarios %}
+          <tr>
+            <td>
+              {{ usuario.nombre }}
+              {% if usuario.nombre == 'admin' %}
+                <span class="badge bg-secondary ms-1">Administrador</span>
+              {% endif %}
+            </td>
+            <td>
+              {% if usuario.nombre != 'admin' %}
+                <a href="{{ url_for('editar_usuario', id=usuario.id) }}" class="btn btn-sm btn-warning">Editar</a>
+                <form method="post" action="{{ url_for('eliminar_usuario', id=usuario.id) }}" class="d-inline" onsubmit="return confirm('¿Eliminar al usuario {{ usuario.nombre }}?');">
+                  <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                </form>
+              {% else %}
+                <span class="text-muted">—</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="2" class="text-center text-muted py-4">No hay usuarios para mostrar.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

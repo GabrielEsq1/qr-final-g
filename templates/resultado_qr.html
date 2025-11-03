@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Resultado QR</title>
+</head>
+<body>
+    <h2>✅ Datos encontrados</h2>
+    <table border="1" cellpadding="5">
+        <thead>
+            <tr>
+                {% for columna in resultados[0].keys() %}
+                <th>{{ columna }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for fila in resultados %}
+            <tr>
+                {% for valor in fila.values() %}
+                <td>{{ valor }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p><a href="{{ url_for('escanear_qr') }}">🔄 Escanear otro</a></p>
+</body>
+</html>

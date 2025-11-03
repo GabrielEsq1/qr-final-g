@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CCB Verificación de Promotores</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #FF6B6B;
+            --primary-dark: #FF5252;
+            --secondary: #4ECDC4;
+            --accent: #45B7D1;
+            --background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --card: rgba(255, 255, 255, 0.95);
+            --text: #2C3E50;
+            --text-light: #7F8C8D;
+            --border: rgba(255, 255, 255, 0.2);
+            --shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            --radius: 20px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .header h1 i {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+        }
+
+        /* Search Section */
+        .search-section {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+        }
+
+        .search-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 16px 20px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Current OP Section */
+        .current-op {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+        }
+
+        .op-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .op-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            padding: 10px 20px;
+            border-radius: 12px;
+            border: 2px solid var(--primary);
+        }
+
+        .op-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            color: white;
+            box-shadow: 0 8px 20px rgba(78, 205, 196, 0.3);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(78, 205, 196, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text);
+            border: 2px solid var(--border);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* User Info Grid */
+        .user-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 22px;
+            border-radius: var(--radius);
+            border-left: 5px solid var(--primary);
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .info-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .info-value a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .info-value a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        /* Table Section */
+        .table-section {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: var(--radius);
+            border: 2px solid var(--border);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        th {
+            padding: 18px 22px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        tbody tr:hover {
+            background: rgba(255, 107, 107, 0.05);
+            transform: scale(1.01);
+        }
+
+        tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        td {
+            padding: 18px 22px;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 22px 30px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            text-align: center;
+            font-size: 0.95rem;
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .search-box {
+                flex-direction: column;
+            }
+            
+            .op-header {
+                flex-direction: column;
+                gap: 20px;
+                align-items: flex-start;
+            }
+            
+            .user-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .header h1 i {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header fade-in">
+            <h1>
+                <i class="fas fa-user-check"></i>
+                CCB Verificación de Promotores
+            </h1>
+        </header>
+
+        <!-- Search Section -->
+        <section class="search-section fade-in">
+            <h2 class="search-title">
+                <i class="fas fa-search"></i>
+                Buscar por OP
+            </h2>
+            <div class="search-box">
+                <input type="text" class="search-input" placeholder="Ingrese el número de orden de producción" id="op-search">
+                <button class="btn btn-success" id="search-btn">
+                    <i class="fas fa-search"></i>
+                    Buscar
+                </button>
+            </div>
+        </section>
+
+        <!-- Current OP Section -->
+        <section class="current-op fade-in">
+            <div class="op-header">
+                <div class="op-title" id="current-op">EX-0790</div>
+                <div class="op-actions">
+                    <a href="https://gabrielesq1.github.io/scaner-qr/" class="btn btn-success" target="_blank">
+                        <i class="fas fa-qrcode"></i>
+                        Escanear QR
+                    </a>
+                    <button class="btn btn-outline" id="clear-btn">
+                        <i class="fas fa-broom"></i>
+                        Limpiar
+                    </button>
+                </div>
+            </div>
+            
+            <!-- User Info -->
+            <div class="user-info">
+                <div class="info-card">
+                    <div class="info-label">
+                        <i class="fas fa-user"></i>
+                        Nombre Usuario
+                    </div>
+                    <div class="info-value" id="user-name">MARIA G. MEDRANDA</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-label">
+                        <i class="fas fa-cube"></i>
+                        Cantidad Fabricada
+                    </div>
+                    <div class="info-value" id="quantity">3</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-label">
+                        <i class="fas fa-tshirt"></i>
+                        Tela
+                    </div>
+                    <div class="info-value" id="fabric">NOMEX CONFORT GRIS 4,5 OZ</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-label">
+                        <i class="fas fa-ruler"></i>
+                        Talla
+                    </div>
+                    <div class="info-value" id="size">16</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-label">
+                        <i class="fas fa-link"></i>
+                        Enlace
+                    </div>
+                    <div class="info-value">
+                        <a href="http://www.madoco.co/EX-0790" id="link" target="_blank">www.madoco.co/EX-0790</a>
+                    </div>
+                </div>
+            </div>
+
+            
+    <script>
+        // Datos de ejemplo
+        const userData = [
+            { op: "EX-0777", name: "RUTH REQUELME", quantity: 3, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "8", link: "www.madoco.co/EX-0777" },
+            { op: "EX-0778", name: "LESSLY GUAMAN", quantity: 3, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "8", link: "www.madoco.co/EX-0778" },
+            { op: "EX-0779", name: "ERIKA SARANGO", quantity: 3, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "10 SM", link: "www.madoco.co/EX-0779" },
+            { op: "EX-0780", name: "SAMANTHA CABRERA", quantity: 3, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "10", link: "www.madoco.co/EX-0780" },
+            { op: "EX-0781", name: "GABRIELA VILLALTA", quantity: 3, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "12", link: "www.madoco.co/EX-0781" },
+            { op: "EX-0782", name: "XIMENA ALEMAN", quantity: 3, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "12", link: "www.madoco.co/EX-0782" },
+            { op: "EX-0783", name: "SHERRY GONZALEZ", quantity: 3, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "12", link: "www.madoco.co/EX-0783" },
+            { op: "EX-0784", name: "STEFANY JIJON", quantity: 3, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "12", link: "www.madoco.co/EX-0784" },
+            { op: "EX-0785", name: "LEONELLA RAMIREZ", quantity: 3, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "12", link: "www.madoco.co/EX-0785" },
+            { op: "EX-0786", name: "MARIA J. VAZQUEZ", quantity: 3, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "12", link: "www.madoco.co/EX-0786" },
+            { op: "EX-0787", name: "HEIDY MALUCIN", quantity: 3, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "14", link: "www.madoco.co/EX-0787" },
+            { op: "EX-0788", name: "GABRIELA BAÑO", quantity: 3, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "16", link: "www.madoco.co/EX-0788" },
+            { op: "EX-0789", name: "MARIA F. CHAVEZ", quantity: 3, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "16", link: "www.madoco.co/EX-0789" },
+            { op: "EX-0790", name: "MARIA G. MEDRANDA", quantity: 3, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "16", link: "www.madoco.co/EX-0790" },
+            { op: "EX-0791", name: "EDISON JIMENEZ", quantity: 3, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "30", link: "www.madoco.co/EX-0791" },
+            { op: "EX-0792", name: "GEISON ORTIZ", quantity: 3, fabric: "NOMEX CONFORT GRIS 4,5 OZ", size: "32", link: "www.madoco.co/EX-0792" }
+        ];
+
+        
+
+        // Elementos DOM
+        const opSearch = document.getElementById('op-search');
+        const searchBtn = document.getElementById('search-btn');
+        const currentOp = document.getElementById('current-op');
+        const userName = document.getElementById('user-name');
+        const quantity = document.getElementById('quantity');
+        const fabric = document.getElementById('fabric');
+        const size = document.getElementById('size');
+        const link = document.getElementById('link');
+        const tableBody = document.getElementById('table-body');
+        const clearBtn = document.getElementById('clear-btn');
+
+        // Cargar datos iniciales
+        function loadInitialData() {
+            const initialOp = "EX-0790";
+            loadUserData(initialOp);
+            loadTableData();
+        }
+
+        // Cargar datos del usuario
+        function loadUserData(op) {
+            const user = userData.find(item => item.op === op);
+            if (user) {
+                currentOp.textContent = user.op;
+                userName.textContent = user.name;
+                quantity.textContent = user.quantity;
+                fabric.textContent = user.fabric;
+                size.textContent = user.size;
+                link.textContent = user.link;
+                link.href = `http://${user.link}`;
+            }
+        }
+
+        // Cargar datos de la tabla
+        function loadTableData() {
+            tableBody.innerHTML = '';
+            elsData.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.els}</td>
+                    <td>${item.quantity}</td>
+                    <td>${item.fabric}</td>
+                    <td>${item.size}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Buscar por OP
+        searchBtn.addEventListener('click', () => {
+            const searchOp = opSearch.value.trim().toUpperCase();
+            if (searchOp) {
+                const user = userData.find(item => item.op === searchOp);
+                if (user) {
+                    loadUserData(searchOp);
+                    opSearch.value = '';
+                    
+                    // Agregar animación
+                    document.querySelector('.current-op').classList.remove('fade-in');
+                    void document.querySelector('.current-op').offsetWidth;
+                    document.querySelector('.current-op').classList.add('fade-in');
+                } else {
+                    alert('No se encontró la orden de producción: ' + searchOp);
+                }
+            } else {
+                alert('Por favor, ingrese un número de OP');
+            }
+        });
+
+        // Limpiar búsqueda
+        clearBtn.addEventListener('click', () => {
+            opSearch.value = '';
+            loadInitialData();
+            
+            // Agregar animación
+            document.querySelector('.current-op').classList.remove('fade-in');
+            void document.querySelector('.current-op').offsetWidth;
+            document.querySelector('.current-op').classList.add('fade-in');
+        });
+
+        // Búsqueda al presionar Enter
+        opSearch.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                searchBtn.click();
+            }
+        });
+
+        // Inicializar
+        loadInitialData();
+    </script>
+</body>
+</html>

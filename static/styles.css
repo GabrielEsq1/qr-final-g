@@ -1,0 +1,165 @@
+/* Estilos generales */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    color: #212529;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Login */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #e9ecef;
+}
+
+.login-box {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-box .logo {
+    height: 70px;
+    display: block;
+    margin: 0 auto;
+}
+
+/* Header */
+.header {
+    padding: 20px 0;
+    border-bottom: 1px solid #dee2e6;
+    margin-bottom: 30px;
+}
+
+.header .logo {
+    height: 80px;
+}
+
+.header .title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin: 10px 0;
+}
+
+.user-info {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-top: 10px;
+}
+
+/* Buscador */
+.search-container {
+    background-color: #e9ecef;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+/* Tabla de resultados */
+.table-responsive {
+    max-height: 600px;
+    overflow-y: auto;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+}
+
+.table th {
+    position: sticky;
+    top: 0;
+    background: #343a40;
+    color: white;
+}
+
+.table td {
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+/* Footer */
+.footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+    text-align: center;
+    padding: 10px 0;
+}
+
+/* Tarjetas genéricas */
+.card {
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Botones uniformes */
+.btn {
+    border-radius: 6px;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+/* Formularios */
+form .form-label {
+    font-weight: 600;
+    color: #495057;
+}
+
+form .form-control {
+    border-radius: 6px;
+}
+
+form .form-text {
+    color: #6c757d;
+}
+
+/* Alertas más suaves */
+.alert {
+    border-radius: 8px;
+}
+
+/* Tabla de gestión de usuarios */
+.table-hover tbody tr:hover {
+    background-color: #f1f3f5;
+}
+
+/* Mensajes flash */
+.alert-dismissible .btn-close {
+    top: 0.4rem;
+    right: 0.8rem;
+}
+
+/* Footer fijo si el contenido es corto */
+main {
+    flex: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .header .title {
+        font-size: 1.5rem;
+    }
+    
+    .table-responsive {
+        max-height: none;
+    }
+    
+    .table td, .table th {
+        white-space: normal;
+    }
+}
+
+@media (max-width: 576px) {
+    .card {
+        margin: 0 1rem;
+    }
+}

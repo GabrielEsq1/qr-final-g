@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Configurador de Camisa Ignífuga - Madoco Style</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f6f6f6;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 20px;
+      gap: 30px;
+    }
+
+    .preview {
+      background-color: #fff;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 400px;
+    }
+
+    .preview img {
+      width: 100%;
+      max-width: 320px;
+      border-radius: 10px;
+    }
+
+    .controls {
+      background-color: #fff;
+      border-radius: 16px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      padding: 20px;
+      width: 400px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #111;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 600;
+    }
+
+    select, input[type="file"] {
+      width: 100%;
+      margin-top: 5px;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    .price {
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      background-color: #222;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 10px;
+      margin-top: 20px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #444;
+    }
+
+    .logo-preview {
+      position: relative;
+    }
+
+    #logo {
+      position: absolute;
+      width: 80px;
+      top: 100px;
+      left: 120px;
+      opacity: 0.9;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 style="text-align:center; margin-top:20px;">Configurador de Camisa Ignífuga</h1>
+  <div class="container">
+    <div class="preview">
+      <div class="logo-preview">
+        <img id="shirt" src="https://i.imgur.com/Lt2Fmg3.png" alt="Camisa ignífuga">
+        <img id="logo" src="" alt="Logo personalizado">
+      </div>
+      <div style="margin-top:10px;">
+        <button id="frontView">Vista Frontal</button>
+        <button id="backView">Vista Posterior</button>
+      </div>
+    </div>
+
+    <div class="controls">
+      <h2>Personaliza tu prenda</h2>
+
+      <label for="area">Área de bordado:</label>
+      <select id="area">
+        <option value="pecho-derecho">Pecho derecho</option>
+        <option value="pecho-izquierdo">Pecho izquierdo</option>
+        <option value="espalda">Espalda</option>
+      </select>
+
+      <label for="logoUpload">Sube tu logo (JPG, PNG):</label>
+      <input type="file" id="logoUpload" accept="image/*">
+
+      <div class="price" id="price">Total: $119.000</div>
+
+      <button id="addCart">Agregar al carrito</button>
+    </div>
+  </div>
+
+  <script>
+    const logoUpload = document.getElementById('logoUpload');
+    const logo = document.getElementById('logo');
+    const price = document.getElementById('price');
+    const area = document.getElementById('area');
+    const shirt = document.getElementById('shirt');
+    const frontView = document.getElementById('frontView');
+    const backView = document.getElementById('backView');
+
+    let total = 119000;
+    let basePrice = 119000;
+
+    logoUpload.addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        logo.src = reader.result;
+        logo.style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+      total = basePrice + 15000;
+      price.textContent = `Total: $${total.toLocaleString('es-CO')}`;
+    });
+
+    area.addEventListener('change', () => {
+      if (area.value === 'pecho-izquierdo') {
+        logo.style.top = '100px';
+        logo.style.left = '60px';
+      } else if (area.value === 'espalda') {
+        logo.style.top = '60px';
+        logo.style.left = '140px';
+      } else {
+        logo.style.top = '100px';
+        logo.style.left = '120px';
+      }
+    });
+
+    frontView.addEventListener('click', () => {
+      shirt.src = "";
+    });
+
+    backView.addEventListener('click', () => {
+      <img src="imagenes/descarga.png" alt="Camisa ignífuga frontal" width="400">
+    });
+
+    document.getElementById('addCart').addEventListener('click', () => {
+      alert('Prenda añadida al carrito con tu logo personalizado.');
+    });
+  </script>
+
+</body>
+</html>
+

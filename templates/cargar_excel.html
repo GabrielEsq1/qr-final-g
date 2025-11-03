@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Cargar nuevo archivo Excel | CCB{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <h1 class="h4 mb-3 text-center">Cargar nuevo archivo Excel</h1>
+
+        {% if mensaje %}
+          <div class="alert alert-info" role="alert">{{ mensaje }}</div>
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data" class="mt-2">
+          <div class="mb-3">
+            <label for="archivo" class="form-label">Selecciona el archivo</label>
+            <input class="form-control" type="file" id="archivo" name="archivo" accept=".xlsx" required>
+            <div class="form-text">Formato permitido: .xlsx</div>
+          </div>
+          <div class="d-grid gap-2 d-sm-flex justify-content-sm-end">
+            <a href="{{ url_for('buscador') }}" class="btn btn-outline-secondary">⬅️ Volver al buscador</a>
+            <button type="submit" class="btn btn-primary">Subir</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

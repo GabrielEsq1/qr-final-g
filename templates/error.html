@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Error | CCB{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-6">
+    <div class="card shadow-sm border-danger">
+      <div class="card-body p-4">
+        <h1 class="h4 text-danger mb-3">Ocurrió un error</h1>
+        <div class="alert alert-danger" role="alert">
+          {{ mensaje }}
+        </div>
+        {% if ruta_archivo %}
+          <p class="mb-0"><strong>Ruta esperada:</strong> <code>{{ ruta_archivo }}</code></p>
+        {% endif %}
+        <div class="mt-4 d-flex gap-2">
+          <a class="btn btn-primary" href="{{ url_for('login') }}">Volver al inicio</a>
+          <a class="btn btn-outline-secondary" href="{{ request.referrer or url_for('buscador') }}">Ir al buscador</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
